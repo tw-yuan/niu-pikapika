@@ -15,17 +15,6 @@ public:
     }
 };
 
-class buttom : public Sprite
-{
-public:
-    buttom() {
-        this->open("resource/buttom.png");
-        this->setAnchor(0, 0);
-        this->setScale(1, 1);
-        this->setPos(520, 100);
-    }
-};
-
 class pikachu_left : public Sprite
 {
 public:
@@ -91,7 +80,7 @@ public:
         this->setPos(600, 350);
     }
 
-    int speed = 3;
+    int speed = 10;
     int x = 1;
     int y = 1;
     int stop = 0;
@@ -186,7 +175,6 @@ public:
 
 int main()
 {
-    Logger::showConsole(true);
     if (Game::init("程式設計期末專題-皮卡丘打排球", 1200, 700))
     {
         auto scene = gcnew Scene;
