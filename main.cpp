@@ -22,7 +22,7 @@ public:
 class pikachu_left : public Sprite
 {
 public:
-    pikachu_left() ////重智皮卡左
+    pikachu_left() ////重置皮卡左
     {
         this->open("resource/pikachu_left.png");
         this->setAnchor(0.5f, 0.5f);
@@ -85,7 +85,7 @@ public:
 class pikachu_right : public Sprite
 {
 public:
-    pikachu_right() /// 重製皮卡右的位置
+    pikachu_right() /// 重置皮卡右的位置
     {
         this->open("resource/pikachu_right.png");
         this->setAnchor(0.5f, 0.5f);
