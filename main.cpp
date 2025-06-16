@@ -3,39 +3,80 @@
 
 using namespace easy2d;
 
+bool gameOver = false;
+
 class Background : public Sprite
 {
 public:
-    Background() {
+    Background() // 超醜海灘背景
+    {
         this->open("resource/background.png");
         this->setAnchor(0, 0);
         float scaleX = Window::getWidth() / this->getWidth();
         float scaleY = Window::getHeight() / this->getHeight();
         this->setScale(scaleX, scaleY);
+        Logger::messageln("背景出現");
     }
 };
 
 class pikachu_left : public Sprite
 {
 public:
-    pikachu_left() {
+    pikachu_left() ////重智皮卡左
+    {
         this->open("resource/pikachu_left.png");
         this->setAnchor(0.5f, 0.5f);
         this->setScale(2, 2);
         this->setPos(Window::getWidth() / 4, Window::getHeight() / 10 * 8.5);
+        isJumping = false;
+        jumpVelocity = 0;
+        gravity = 0.5f;
+        initialY = this->getPosY();
     }
 
-    void onUpdate() {
-        if (Input::isDown(KeyCode::A)) {
+    bool isJumping;
+    float jumpVelocity;
+    float gravity;
+    float initialY;
+
+    void onUpdate() // 皮卡左移動跳躍
+    {
+        if (gameOver)
+            return;
+
+        if (Input::isDown(KeyCode::A))
+        {
             float x = this->getPosX();
-            if (x > 50) {
+            if (x > 50)
+            {
                 this->movePosX(-2);
             }
         }
-        if (Input::isDown(KeyCode::D)) {
+        if (Input::isDown(KeyCode::D))
+        {
             float x = this->getPosX();
-            if (x < 540) {
+            if (x < 540)
+            {
                 this->movePosX(2);
+            }
+        }
+        if (Input::isDown(KeyCode::W) && !isJumping)
+        {
+            isJumping = true;
+            jumpVelocity = -15;
+            Logger::messageln("左皮卡跳");
+        }
+
+        if (isJumping)
+        {
+            this->movePosY(jumpVelocity);
+            jumpVelocity += gravity;
+
+            if (this->getPosY() >= initialY)
+            {
+                this->setPosY(initialY);
+                isJumping = false;
+                jumpVelocity = 0;
             }
         }
     }
@@ -44,24 +85,63 @@ public:
 class pikachu_right : public Sprite
 {
 public:
-    pikachu_right() {
+    pikachu_right() /// 重製皮卡右的位置
+    {
         this->open("resource/pikachu_right.png");
         this->setAnchor(0.5f, 0.5f);
         this->setScale(2, 2);
         this->setPos(Window::getWidth() / 4 * 3, Window::getHeight() / 10 * 8.5);
+        isJumping = false;
+        jumpVelocity = 0;
+        gravity = 0.5f;
+        initialY = this->getPosY();
     }
 
-    void onUpdate() {
-        if (Input::isDown(KeyCode::Left)) {
+    bool isJumping;
+    float jumpVelocity;
+    float gravity;
+    float initialY;
+
+    void onUpdate() // 皮卡右的移動跟跳
+    {
+        if (gameOver)
+            return;
+
+        if (Input::isDown(KeyCode::Left))
+        {
             float x = this->getPosX();
-            if (x > 660) {
+            if (x > 660)
+            {
                 this->movePosX(-2);
             }
         }
-        if (Input::isDown(KeyCode::Right)) {
+        if (Input::isDown(KeyCode::Right))
+        {
             float x = this->getPosX();
-            if (x < 1150) {
+            if (x < 1150)
+            {
                 this->movePosX(2);
+            }
+        }
+        if (Input::isDown(KeyCode::Up) && !isJumping)
+        {
+            isJumping = true;
+            jumpVelocity = -15;
+            //////排錯看看到時候要不要刪掉
+            Logger::messageln("右皮卡跳");
+            //////////////////
+        }
+
+        if (isJumping)
+        {
+            this->movePosY(jumpVelocity);
+            jumpVelocity += gravity;
+
+            if (this->getPosY() >= initialY)
+            {
+                this->setPosY(initialY);
+                isJumping = false;
+                jumpVelocity = 0;
             }
         }
     }
@@ -70,94 +150,144 @@ public:
 class pokeball : public Sprite
 {
 public:
-    pokeball(Sprite* leftPikachu, Sprite* rightPikachu, Text* scoreLeftText, Text* scoreRightText, int* scoreLeft, int* scoreRight, int* Second, Text* Ssssss, Text* Win)
+    pokeball(Sprite *leftPikachu, Sprite *rightPikachu, Text *scoreLeftText, Text *scoreRightText, int *scoreLeft, int *scoreRight, int *Second, Text *Ssssss, Text *Win)
         : leftPikachu(leftPikachu), rightPikachu(rightPikachu),
-        scoreLeftText(scoreLeftText), scoreRightText(scoreRightText),
-        scoreLeft(scoreLeft), scoreRight(scoreRight), Second(Second), Ssssss(Ssssss), Win(Win) {
+          scoreLeftText(scoreLeftText), scoreRightText(scoreRightText),
+          scoreLeft(scoreLeft), scoreRight(scoreRight), Second(Second), Ssssss(Ssssss), Win(Win)
+    {
         this->open("resource/pokeball.png");
         this->setAnchor(0.5f, 0.5f);
         this->setScale(0.8, 0.8);
         this->setPos(600, 350);
+        alliconstoppp = 0;
     }
 
     int speed = 10;
     int x = 1;
     int y = 1;
     int stop = 0;
-    Sprite* leftPikachu;
-    Sprite* rightPikachu;
-    Text* scoreLeftText;
-    Text* scoreRightText;
-    Text* Ssssss;
-    Text* Win;
-    int* scoreLeft;
-    int* scoreRight;
-    int* Second;
+    int alliconstoppp;
+    Sprite *leftPikachu;
+    Sprite *rightPikachu;
+    Text *scoreLeftText;
+    Text *scoreRightText;
+    Text *Ssssss;
+    Text *Win;
+    int *scoreLeft;
+    int *scoreRight;
+    int *Second;
 
-    void onUpdate() {
-        if (this->getPosX() >= 1150) {
+    void handleCollision(Sprite *pikachu) // 球球與皮卡丘的激情對撞
+    {
+        float ballX = this->getPosX();
+        float pikachuX = pikachu->getPosX();
+
+        if (ballX < pikachuX)
+        {
             x = -1;
         }
-        if (this->getPosX() <= 50) {
+        else
+        {
             x = 1;
         }
-        if (this->getPosY() <= 50) {
+        y = -y;
+
+        float moveDistance = speed * 2;
+        this->movePosX(x * moveDistance);
+        this->movePosY(y * moveDistance);
+
+        alliconstoppp = 10;
+    }
+
+    void onUpdate()
+    {
+        if (gameOver)
+            return;
+
+        if (alliconstoppp > 0)
+        {
+            alliconstoppp--;
+        }
+
+        if (this->getPosX() >= 1150)
+        {
+            x = -1;
+        }
+        if (this->getPosX() <= 50)
+        {
+            x = 1;
+        }
+        if (this->getPosY() <= 50)
+        {
             y = 1;
         }
 
-        if (isCollidingWith(rightPikachu)) {
-            x = -x;
-            y = -y;
-        }
-
-        if (isCollidingWith(leftPikachu)) {
-            x = x;
-            y = -y;
-        }
-
-        if (this->getPosY() >= 600) {
-            float posX = this->getPosX();
-            if (posX > 660 && posX < 1150) {
-                (*scoreLeft)++;
-                scoreLeftText->setText("左邊分數: " + std::to_string(*scoreLeft));
+        if (alliconstoppp == 0 && (*Second) <= 0)
+        {
+            if (isCollidingWith(rightPikachu))
+            {
+                handleCollision(rightPikachu);
             }
-            else if (posX > 50 && posX < 540) {
+
+            if (isCollidingWith(leftPikachu))
+            {
+                handleCollision(leftPikachu);
+            }
+        }
+
+        if (this->getPosY() >= 600)
+        {
+            float posX = this->getPosX();
+            if (posX > 660 && posX < 1150)
+            {
+                (*scoreLeft)++;
+                scoreLeftText->setText("左邊分數:" + std::to_string(*scoreLeft));
+            }
+            else if (posX > 50 && posX < 540)
+            {
                 (*scoreRight)++;
-                scoreRightText->setText("右邊分數: " + std::to_string(*scoreRight));
+                scoreRightText->setText("右邊分數:" + std::to_string(*scoreRight));
             }
             this->setPos(600, 350);
             y = -y;
             return;
         }
-        if (((*Second) / 60) > 0 && stop != 1){
+        if (((*Second) / 60) > 0 && stop != 1)
+        {
             Ssssss->setText(std::to_string((*Second) / 60));
         }
-        else {
+        else
+        {
             Ssssss->setText("");
         }
-        
+
         (*Second)--;
-        if ((*Second) <= 0) {
+
+        if ((*Second) <= 0)
+        {
             this->movePosX(x * speed);
             this->movePosY(y * speed);
         }
-        if ((*scoreRight) >= 5) {
+        if ((*scoreRight) >= 5)
+        {
             Win->setText("右邊獲勝！");
-            Win->setPos(Window::getWidth() / 4*3, Window::getHeight() / 2);
+            Win->setPos(Window::getWidth() / 4 * 3, Window::getHeight() / 2);
             this->setScale(0);
             stop = 1;
+            gameOver = true;
         }
-        if ((*scoreLeft) >= 5) {
-            Win->setText("左邊獲勝！");
+        if ((*scoreLeft) >= 5)
+        {
+            Win->setText("左邊獲勝 ！");
             Win->setPos(Window::getWidth() / 4, Window::getHeight() / 2);
             this->setScale(0);
             stop = 1;
-
+            gameOver = true;
         }
-        
     }
 
-    bool isCollidingWith(Sprite* other) {
+    bool isCollidingWith(Sprite *other) // 檢測球與其他物體的碰撞
+    {
         float thisLeft = this->getPosX() - this->getWidth() * this->getAnchorX();
         float thisRight = thisLeft + this->getWidth();
         float thisTop = this->getPosY() - this->getHeight() * this->getAnchorY();
@@ -169,7 +299,7 @@ public:
         float otherBottom = otherTop + other->getHeight();
 
         return !(thisRight < otherLeft || thisLeft > otherRight ||
-            thisBottom < otherTop || thisTop > otherBottom);
+                 thisBottom < otherTop || thisTop > otherBottom);
     }
 };
 
@@ -205,7 +335,7 @@ int main()
         auto ssssss = gcnew Text("5");
         ssssss->setAnchor(0.5f, 0.5f);
         ssssss->setScale(12);
-        ssssss->setPos(Window::getWidth()/2, 100);
+        ssssss->setPos(Window::getWidth() / 2, 100);
         scene->addChild(ssssss);
 
         auto win = gcnew Text("");
