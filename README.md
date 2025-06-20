@@ -22,7 +22,7 @@
 
 ![遊戲截圖](https://raw.githubusercontent.com/tw-yuan/niu-pikapika/refs/heads/main/resource/demo.gif) 
 
-## 技術棧
+## 技術框架
 
 - **語言**: C++
 - **遊戲引擎**: Easy2D
