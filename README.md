@@ -1,6 +1,6 @@
 # niu-pika 皮卡丘排球
 
-這是一個簡單的雙人對戰排球遊戲，由 C++ 和 [easy2d](https://easy2d.org/) 遊戲引擎製成。
+這是一個簡單的雙人對戰排球遊戲，由 C++ 和 [Easy2D](https://easy2d.cn/) 遊戲引擎製成。
 
 ## 遊戲玩法
 
@@ -20,18 +20,18 @@
 
 ## 遊戲截圖
 
-![遊戲截圖](resource/screenshot.png) 
+![遊戲截圖](https://raw.githubusercontent.com/tw-yuan/niu-pikapika/refs/heads/main/resource/demo.gif) 
 
 ## 技術棧
 
 - **語言**: C++
-- **遊戲引擎**: easy2d
+- **遊戲引擎**: Easy2D
 
 ## 如何編譯與執行
 本專案使用 Visual Studio 進行開發。
 
 1.  請先安裝 Visual Studio 以及 C++ 遊戲開發相關的工作負載。
-2.  請確保您的環境中已正確設定 easy2d 函式庫。
+2.  請確保您的環境中已正確設定 Easy2D 函式庫。
 3.  使用 Visual Studio 開啟 `niu-pika.vcxproj` 專案檔案。
 4.  編譯專案並執行。
 
